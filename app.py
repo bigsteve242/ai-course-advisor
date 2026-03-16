@@ -4,7 +4,13 @@ import spacy
 from difflib import get_close_matches
 from model import data
 
-nlp = spacy.load("en_core_web_sm")
+import spacy
+try:
+    nlp = spacy.load("en_core_web_sm")
+except:
+    import subprocess
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
 app = Flask(__name__)
 
 KNOWN_SUBJECTS = [
