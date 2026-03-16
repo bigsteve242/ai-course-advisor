@@ -1,0 +1,75 @@
+course,subjects
+Medicine and Surgery,English Biology Physics Chemistry
+Pharmacy,English Biology Physics Chemistry
+Nursing Science,English Biology Physics Chemistry
+Medical Laboratory Science,English Biology Physics Chemistry
+Dentistry,English Biology Physics Chemistry
+Radiography,English Biology Physics Chemistry
+Physiotherapy,English Biology Physics Chemistry
+Computer Science,English Mathematics Physics Chemistry
+Biochemistry,English Biology Physics Chemistry
+Biological Sciences,English Biology Chemistry Physics
+Physics,English Physics Mathematics Chemistry
+Mathematics,English Mathematics Physics Chemistry
+Chemistry,English Chemistry Physics Mathematics
+Food Science & Technology,English Chemistry Mathematics Physics
+Agricultural Engineering,English Mathematics Physics Chemistry
+Petroleum Engineering,English Mathematics Physics Chemistry
+Chemical Engineering,English Mathematics Physics Chemistry
+Computer Engineering,English Mathematics Physics Chemistry
+Mechanical Engineering,English Mathematics Physics Chemistry
+Civil Engineering,English Mathematics Physics Chemistry
+Electrical/Electronics Engineering,English Mathematics Physics Chemistry
+Surveying & Geoinformatics,English Mathematics Physics Chemistry
+Geology,English Mathematics Physics Chemistry
+Statistics,English Mathematics Physics Chemistry
+Building Technology,English Mathematics Physics Chemistry
+Biotechnology,English Biology Chemistry Physics
+Zoology,English Biology Chemistry Physics
+Botany,English Biology Chemistry Physics
+Agriculture,English Chemistry Biology Mathematics
+Animal Science,English Biology Chemistry Mathematics
+Crop Science,English Biology Chemistry Mathematics
+Plant Science,English Biology Chemistry Mathematics
+Geography,English Geography Mathematics Physics
+Economics,English Mathematics Economics Government
+Accounting,English Mathematics Economics Government
+Business Administration,English Mathematics Economics Government
+Banking and Finance,English Mathematics Economics Government
+Public Administration,English Government Economics History
+Mass Communication,English Literature Government Economics
+Law,English Literature Government CRS
+Political Science,English Government History CRS
+Sociology,English Government History Economics
+Psychology,English Government History Economics
+Philosophy,English Government History Literature
+Religious Studies,English CRS Government History
+Anthropology,English History CRS Geography
+Criminology & Security Studies,English Government History Economics
+Civil Law,English Literature Government CRS
+Islamic/Sharia Law,English Islamic Studies Government History
+English Language,English Literature History Government
+French,English French Literature CRS
+Hausa,English Hausa Literature Government
+Igbo,English Igbo Literature Government
+Yoruba,English Yoruba Literature Government
+Tourism Studies,English Geography Economics History
+Environmental Biology,English Biology Chemistry Physics
+Geophysics,English Physics Mathematics Chemistry
+Bioinformatics,English Biology Chemistry Mathematics
+Taxation,English Mathematics Economics Government
+Social Work,English Government History CRS
+Entrepreneurship,English Mathematics Economics Government
+Peace & Conflict Resolution,English Government History CRS
+Veterinary Medicine,English Biology Chemistry Mathematics
+Urban & Regional Planning,English Mathematics Geography Economics
+Counsellor Education,English Government Economics Literature
+Education & Technology,English Mathematics Physics Chemistry
+Education & Religious Studies,English CRS Government History
+Environmental Education,English Biology Geography Chemistry
+Demography & Social Statistics,English Mathematics Economics Government
+Family, Nutrition & Consumer Sciences,English Biology Chemistry Mathematics
+Water Resources Management,English Biology Physics Mathematics
+Animal Production,English Biology Chemistry Mathematics
+Plant Production,English Biology Chemistry Physics
+Agronomy,English Biology Chemistry Mathematics
