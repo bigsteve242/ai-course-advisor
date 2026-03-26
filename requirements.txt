@@ -1,7 +1,6 @@
 Flask==2.3.2
 gunicorn==21.2.0
 spacy==3.6.1
-en-core-web-sm==3.6.0
 numpy==1.26.4
 pandas==2.1.1
 requests==2.32.5
