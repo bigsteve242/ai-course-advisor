@@ -1,10 +1,147 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Course Advisor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 STEPHEN'S AI Course Advisor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 400px;
+            max-width: 95%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #4a90e2;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user {
+            background: #e1ffc7;
+            align-self: flex-end;
+        }
+
+        .bot {
+            background: #f0f0f0;
+            align-self: flex-start;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        .chat-footer button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            background: #4a90e2;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .chat-footer button:hover {
+            background: #357ab8;
+        }
+    </style>
 </head>
 <body>
-    <h2>AI Chatbot</h2>
-    <p>It is working 🎉</p>
+    <div class="chat-container">
+        <div class="chat-header">🎓 STEPHEN'S AI Course Advisor Chatbot</div>
+        <div class="chat-body" id="chat-body">
+            <div class="bot message">Hello! Please tell me your subjects or a course you are interested in.</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="Type your subjects or course here..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chat-body');
+        const userInput = document.getElementById('user-input');
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Display user's message
+            appendMessage(message, 'user');
+            userInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Send to server
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await response.json();
+                appendMessage(data.response, 'bot');
+            } catch (err) {
+                appendMessage('⚠️ Error: Could not reach server.', 'bot');
+            }
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.innerHTML = text.replace(/\n/g, '<br>');
+            chatBody.appendChild(div);
+        }
+
+        // Allow Enter key to send
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
 </body>
 </html>

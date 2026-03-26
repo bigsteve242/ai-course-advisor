@@ -1,75 +1,53 @@
-course,subjects
-Medicine and Surgery,English Biology Physics Chemistry
-Pharmacy,English Biology Physics Chemistry
-Nursing Science,English Biology Physics Chemistry
-Medical Laboratory Science,English Biology Physics Chemistry
-Dentistry,English Biology Physics Chemistry
-Radiography,English Biology Physics Chemistry
-Physiotherapy,English Biology Physics Chemistry
-Computer Science,English Mathematics Physics Chemistry
-Biochemistry,English Biology Physics Chemistry
-Biological Sciences,English Biology Chemistry Physics
-Physics,English Physics Mathematics Chemistry
-Mathematics,English Mathematics Physics Chemistry
-Chemistry,English Chemistry Physics Mathematics
-Food Science & Technology,English Chemistry Mathematics Physics
-Agricultural Engineering,English Mathematics Physics Chemistry
-Petroleum Engineering,English Mathematics Physics Chemistry
-Chemical Engineering,English Mathematics Physics Chemistry
-Computer Engineering,English Mathematics Physics Chemistry
-Mechanical Engineering,English Mathematics Physics Chemistry
-Civil Engineering,English Mathematics Physics Chemistry
-Electrical/Electronics Engineering,English Mathematics Physics Chemistry
-Surveying & Geoinformatics,English Mathematics Physics Chemistry
-Geology,English Mathematics Physics Chemistry
-Statistics,English Mathematics Physics Chemistry
-Building Technology,English Mathematics Physics Chemistry
-Biotechnology,English Biology Chemistry Physics
-Zoology,English Biology Chemistry Physics
-Botany,English Biology Chemistry Physics
-Agriculture,English Chemistry Biology Mathematics
-Animal Science,English Biology Chemistry Mathematics
-Crop Science,English Biology Chemistry Mathematics
-Plant Science,English Biology Chemistry Mathematics
-Geography,English Geography Mathematics Physics
-Economics,English Mathematics Economics Government
-Accounting,English Mathematics Economics Government
-Business Administration,English Mathematics Economics Government
-Banking and Finance,English Mathematics Economics Government
-Public Administration,English Government Economics History
-Mass Communication,English Literature Government Economics
-Law,English Literature Government CRS
-Political Science,English Government History CRS
-Sociology,English Government History Economics
-Psychology,English Government History Economics
-Philosophy,English Government History Literature
-Religious Studies,English CRS Government History
-Anthropology,English History CRS Geography
-Criminology & Security Studies,English Government History Economics
-Civil Law,English Literature Government CRS
-Islamic/Sharia Law,English Islamic Studies Government History
-English Language,English Literature History Government
-French,English French Literature CRS
-Hausa,English Hausa Literature Government
-Igbo,English Igbo Literature Government
-Yoruba,English Yoruba Literature Government
-Tourism Studies,English Geography Economics History
-Environmental Biology,English Biology Chemistry Physics
-Geophysics,English Physics Mathematics Chemistry
-Bioinformatics,English Biology Chemistry Mathematics
-Taxation,English Mathematics Economics Government
-Social Work,English Government History CRS
-Entrepreneurship,English Mathematics Economics Government
-Peace & Conflict Resolution,English Government History CRS
-Veterinary Medicine,English Biology Chemistry Mathematics
-Urban & Regional Planning,English Mathematics Geography Economics
-Counsellor Education,English Government Economics Literature
-Education & Technology,English Mathematics Physics Chemistry
-Education & Religious Studies,English CRS Government History
-Environmental Education,English Biology Geography Chemistry
-Demography & Social Statistics,English Mathematics Economics Government
-Family Nutrition & Consumer Sciences,English Biology Chemistry Mathematics
-Water Resources Management,English Biology Physics Mathematics
-Animal Production,English Biology Chemistry Mathematics
-Plant Production,English Biology Chemistry Physics
-Agronomy,English Biology Chemistry Mathematics
+course,required_subjects,description
+Medicine,English,Mathematics,Biology,Chemistry,"Medicine is a challenging field; careers: doctor, surgeon, researcher."
+Economics,English,Mathematics,Economics,Government,"Economics explores markets, finance, and policy."
+Computer Science,Mathematics,Physics,English,"Computer Science covers programming, algorithms, and AI."
+Law,English,Government,CRS,"Law involves legal systems; careers: lawyer, judge, legal consultant."
+Engineering (Mechanical),Mathematics,Physics,Chemistry,"Mechanical Engineering designs machines; careers: mechanical engineer."
+Engineering (Electrical),Mathematics,Physics,Chemistry,"Electrical Engineering deals with electricity, circuits, and electronics."
+Engineering (Civil),Mathematics,Physics,Chemistry,"Civil Engineering focuses on infrastructure and construction."
+Accounting,Mathematics,Economics,English,"Accounting manages financial records; careers: accountant, auditor."
+Business Administration,Mathematics,Economics,English,"Covers management, finance, and operations."
+Pharmacy,English,Mathematics,Chemistry,Biology,"Pharmacy deals with drugs and medicine; careers: pharmacist."
+Nursing,English,Biology,Chemistry,Mathematics,"Nursing focuses on patient care and healthcare management."
+Biochemistry,English,Mathematics,Biology,Chemistry,"Biochemistry merges biology and chemistry; careers: researcher, lab scientist."
+Psychology,English,Biology,Mathematics,"Psychology studies the human mind and behavior."
+Sociology,English,Government,CRS,"Sociology explores society and social systems."
+Statistics,Mathematics,English,Economics,"Statistics analyzes data; careers: statistician, data analyst."
+Political Science,English,Government,CRS,"Political Science examines governance and policies."
+Architecture,Mathematics,Physics,English,"Architecture is designing buildings; careers: architect, urban planner."
+Environmental Science,Mathematics,Biology,Chemistry,English,"Environmental Science studies ecosystems and sustainability."
+Information Technology,Mathematics,Physics,English,"IT covers computing systems, networks, and cybersecurity."
+Agricultural Science,Mathematics,Biology,Chemistry,English,"Agricultural Science focuses on farming and research."
+Actuarial Science,Mathematics,English,Economics,"Actuarial Science applies math to finance and risk analysis."
+Microbiology,English,Biology,Chemistry,"Microbiology studies microorganisms; careers: lab scientist, researcher."
+Food Science,Mathematics,Chemistry,Biology,English,"Food Science involves nutrition, safety, and technology."
+Geology,Mathematics,Physics,Chemistry,English,"Geology studies earth processes; careers: geologist, researcher."
+Marine Biology,English,Biology,Chemistry,"Marine Biology studies ocean life; careers: researcher, conservationist."
+Veterinary Medicine,English,Mathematics,Biology,Chemistry,"Veterinary Medicine treats animals; careers: vet, researcher."
+Dentistry,English,Mathematics,Biology,Chemistry,"Dentistry focuses on oral health; careers: dentist, dental surgeon."
+Physiotherapy,English,Biology,Mathematics,"Physiotherapy restores mobility; careers: physiotherapist."
+Fine Arts,English,"Fine Arts covers creative expression; careers: artist, designer, animator."
+Graphic Design,English,Computer Science,"Graphic Design involves digital art and visual communication."
+Mass Communication,English,"Mass Communication involves media, journalism, and broadcasting."
+Journalism,English,"Journalism is reporting and writing news stories; careers: reporter, editor."
+Criminology,English,Government,CRS,"Criminology studies crime, law enforcement, and justice systems."
+International Relations,English,Government,"Studies diplomacy, politics, and global affairs."
+Linguistics,English,"Linguistics studies language structure and usage."
+Music,English,"Music studies performance, composition, and theory."
+Theater Arts,English,"Theater Arts covers acting, directing, and stage production."
+Econometrics,Mathematics,Economics,English,"Econometrics uses statistical methods to analyze economic data."
+Information Systems,Mathematics,Computer Science,English,"Information Systems focus on IT solutions for business processes."
+Software Engineering,Mathematics,Computer Science,English,"Software Engineering designs, tests, and maintains software."
+Data Science,Mathematics,Computer Science,English,"Data Science extracts insights from data using analytics and AI."
+Cybersecurity,Mathematics,Computer Science,English,"Cybersecurity protects digital systems from threats."
+Artificial Intelligence,Mathematics,Computer Science,English,"AI involves machine learning, robotics, and intelligent systems."
+Mechatronics,Mathematics,Physics,Engineering,"Mechatronics combines mechanics, electronics, and computing."
+Chemical Engineering,Mathematics,Physics,Chemistry,"Chemical Engineering applies chemistry to production processes."
+Petroleum Engineering,Mathematics,Physics,Chemistry,"Petroleum Engineering extracts and processes oil and gas."
+Civil Aviation,Mathematics,Physics,English,"Civil Aviation covers aircraft operations and management."
+Hospitality Management,Mathematics,English,"Hospitality Management focuses on hotels, tourism, and service."
+Tourism Management,Mathematics,English,"Tourism Management studies travel, logistics, and culture."
+Education,English,"Education trains teachers and educators for schools and institutions."
+Economics & Finance,Mathematics,Economics,English,"Covers economic theory, banking, and investment."
+Biotechnology,Biology,Chemistry,Mathematics,English,"Biotechnology develops medical, agricultural, and industrial applications."

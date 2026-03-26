@@ -1,28 +1,23 @@
+# app.py
 from flask import Flask, render_template, request, jsonify
 from model import normalize_subjects, get_required_subjects, can_study, recommend_courses
-from difflib import get_close_matches
-from model import data
 import spacy
-
-# Safe spaCy loading (no download needed)
-try:
-    nlp = spacy.load("en_core_web_sm")
-except:
-    nlp = spacy.blank("en")
+from difflib import get_close_matches
 
 app = Flask(__name__)
 
-# Expanded subject recognition
+# Load spaCy model safely
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    import subprocess
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
+
+# Known subjects for detection
 KNOWN_SUBJECTS = [
-    "mathematics", "math", "maths",
-    "physics", "phy",
-    "chemistry", "chem",
-    "biology", "bio",
-    "economics", "econ",
-    "literature", "lit",
-    "government", "govt",
-    "crs",
-    "english"
+    "mathematics", "math", "physics", "chemistry", "biology",
+    "economics", "literature", "government", "crs", "english", "bio"
 ]
 
 @app.route("/")
@@ -31,40 +26,34 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_input = request.json.get("message", "").strip().lower()
-
-    # Process input with spaCy
-    doc = nlp(user_input)
-
+    user_input = request.json.get("message", "").strip()
+    
     # Detect subjects
-    user_subjects = []
-    for token in doc:
-        word = token.text.lower()
-        if word in KNOWN_SUBJECTS:
-            user_subjects.append(word)
-
+    doc = nlp(user_input)
+    user_subjects = [token.text.lower() for token in doc if token.text.lower() in KNOWN_SUBJECTS]
     user_subjects = normalize_subjects(user_subjects)
 
-    # Detect course using fuzzy matching
-    matches = get_close_matches(user_input, [c.lower() for c in data['course']], n=1, cutoff=0.6)
-    course_request = None
-    if matches:
-        course_request = data[data['course'].str.lower() == matches[0]]['course'].iloc[0]
+    # Detect course from input
+    matches = get_close_matches(user_input.lower(), [c.lower() for c in data['course']], n=1, cutoff=0.6)
+    course_request = matches[0] if matches else None
 
     # Generate response
     if course_request and user_subjects:
         if can_study(course_request, user_subjects):
-            response = f"✅ You can study {course_request} with your subjects."
+            description = data[data['course'].str.lower() == course_request]['description'].iloc[0]
+            response = f"✅ You can study {course_request.title()}.\n💡 About this course: {description}"
         else:
             required = get_required_subjects(course_request)
-            response = f"❌ You cannot study {course_request} with your subjects. Required: {', '.join(required)}"
+            response = f"❌ You cannot study {course_request.title()} with your subjects ({', '.join(user_subjects)}).\n" \
+                       f"Required subjects: {', '.join(required)}"
     elif course_request:
         required = get_required_subjects(course_request)
-        response = f"To study {course_request}, you need: {', '.join(required)}"
+        description = data[data['course'].str.lower() == course_request]['description'].iloc[0]
+        response = f"To study {course_request.title()}, you need: {', '.join(required)}\n💡 About this course: {description}"
     elif user_subjects:
         courses = recommend_courses(user_subjects)
         if courses:
-            response = "Based on your subjects you can study: " + ", ".join(courses)
+            response = "Based on your subjects, you can study:\n" + "\n".join(courses)
         else:
             response = "No matching courses found for your subjects."
     else:
@@ -73,4 +62,4 @@ def chat():
     return jsonify({"response": response})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=10000)
