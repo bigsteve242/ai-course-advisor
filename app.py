@@ -1,21 +1,28 @@
 from flask import Flask, render_template, request, jsonify
 from model import normalize_subjects, get_required_subjects, can_study, recommend_courses
-import spacy
 from difflib import get_close_matches
 from model import data
-
 import spacy
+
+# Safe spaCy loading (no download needed)
 try:
     nlp = spacy.load("en_core_web_sm")
 except:
-    import subprocess
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.blank("en")
+
 app = Flask(__name__)
 
+# Expanded subject recognition
 KNOWN_SUBJECTS = [
-    "mathematics", "math", "physics", "chemistry", "biology",
-    "economics", "literature", "government", "crs", "english", "bio"
+    "mathematics", "math", "maths",
+    "physics", "phy",
+    "chemistry", "chem",
+    "biology", "bio",
+    "economics", "econ",
+    "literature", "lit",
+    "government", "govt",
+    "crs",
+    "english"
 ]
 
 @app.route("/")
@@ -24,16 +31,25 @@ def home():
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    user_input = request.json.get("message", "").strip()
-    
-    # Detect subjects
+    user_input = request.json.get("message", "").strip().lower()
+
+    # Process input with spaCy
     doc = nlp(user_input)
-    user_subjects = [token.text for token in doc if token.text.lower() in KNOWN_SUBJECTS]
+
+    # Detect subjects
+    user_subjects = []
+    for token in doc:
+        word = token.text.lower()
+        if word in KNOWN_SUBJECTS:
+            user_subjects.append(word)
+
     user_subjects = normalize_subjects(user_subjects)
 
-    # Detect course
-    matches = get_close_matches(user_input.lower(), [c.lower() for c in data['course']], n=1, cutoff=0.6)
-    course_request = data[data['course'].str.lower() == matches[0]]['course'].iloc[0] if matches else None
+    # Detect course using fuzzy matching
+    matches = get_close_matches(user_input, [c.lower() for c in data['course']], n=1, cutoff=0.6)
+    course_request = None
+    if matches:
+        course_request = data[data['course'].str.lower() == matches[0]]['course'].iloc[0]
 
     # Generate response
     if course_request and user_subjects:
