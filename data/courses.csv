@@ -1,37 +1,55 @@
-course,required_subjects
-Medicine,English, Mathematics, Biology, Chemistry
-Nursing,English, Mathematics, Biology, Chemistry
-Pharmacy,English, Mathematics, Biology, Chemistry
-Economics,English, Mathematics, Economics, Government
-Accounting,English, Mathematics, Economics
-Computer Science,English, Mathematics, Physics
-Software Engineering,English, Mathematics, Physics
-Information Technology,English, Mathematics, Physics
-Computer Engineering,English, Mathematics, Physics, Chemistry
-Mechanical Engineering,English, Mathematics, Physics
-Electrical Engineering,English, Mathematics, Physics
-Civil Engineering,English, Mathematics, Physics
-Architecture,English, Mathematics, Physics, Technical Drawing
-Law,English, Literature, Government
-Political Science,English, Government, Literature, Economics
-Business Administration,English, Mathematics, Economics
-Marketing,English, Mathematics, Economics
-Mass Communication,English, Literature, Government
-Sociology,English, Literature, Government
-Psychology,English, Literature, Biology
-Microbiology,English, Biology, Chemistry, Mathematics
-Biochemistry,English, Biology, Chemistry, Mathematics
-Physics,English, Mathematics, Physics
-Chemistry,English, Mathematics, Chemistry
-Mathematics,English, Mathematics
-Statistics,English, Mathematics
-Environmental Science,English, Biology, Chemistry, Geography
-Geography,English, Mathematics, Geography
-Fine Arts,English, Literature, Arts
-Performing Arts,English, Literature, Arts
-AI & Machine Learning,English, Mathematics, Physics, Computer Science
-Data Science,English, Mathematics, Computer Science, Statistics
-Cybersecurity,English, Mathematics, Computer Science, IT
-Robotics,English, Mathematics, Physics, Computer Science
-Econometrics,English, Mathematics, Economics, Statistics
-Urban Planning,English, Mathematics, Geography, Government
+Course,Required Subjects
+Medicine,English,Biology,Chemistry,Physics
+Nursing,English,Biology,Chemistry
+Pharmacy,English,Biology,Chemistry
+Physiotherapy,English,Biology,Chemistry,Physics
+Microbiology,English,Biology,Chemistry
+Biochemistry,English,Biology,Chemistry
+Zoology,English,Biology,Chemistry
+Botany,English,Biology,Chemistry
+Computer Science,English,Mathematics,Physics
+Information Technology,English,Mathematics,Physics
+Software Engineering,English,Mathematics,Physics
+Statistics,English,Mathematics,Economics
+Economics,English,Mathematics,Economics,Government
+Accounting,English,Mathematics,Economics
+Business Administration,English,Mathematics,Economics
+Marketing,English,Mathematics,Economics
+Law,English,Government,History
+Political Science,English,Government,History
+International Relations,English,Government,History
+Geography,English,Geography,Economics
+Sociology,English,Government,Economics
+Psychology,English,Biology,Mathematics
+Mass Communication,English,Government,Economics
+Journalism,English,Government,Economics
+Architecture,English,Mathematics,Physics
+Quantity Surveying,English,Mathematics,Physics
+Estate Management,English,Mathematics,Economics
+Urban and Regional Planning,English,Mathematics,Geography
+Civil Engineering,English,Mathematics,Physics
+Mechanical Engineering,English,Mathematics,Physics
+Electrical Engineering,English,Mathematics,Physics
+Computer Engineering,English,Mathematics,Physics
+Aeronautical Engineering,English,Mathematics,Physics
+Petroleum Engineering,English,Mathematics,Physics,Chemistry
+Industrial Chemistry,English,Chemistry,Mathematics
+Chemical Engineering,English,Mathematics,Chemistry,Physics
+Food Science,English,Biology,Chemistry
+Nutrition and Dietetics,English,Biology,Chemistry
+Environmental Science,English,Biology,Chemistry
+Geology,English,Physics,Chemistry
+Marine Biology,English,Biology,Chemistry
+Physiology,English,Biology,Chemistry
+Anatomy,English,Biology,Chemistry
+Philosophy,English,Government,History
+Theology,English,Government,History
+Linguistics,English,Government
+Education,English,Mathematics,Government
+Library Science,English,Government,Economics
+Theatre Arts,English,Government
+Fine Arts,English,Government
+Music,English,Government
+Fashion Design,English,Government
+Hotel Management,English,Mathematics,Economics
+Tourism Management,English,Mathematics,Economics
