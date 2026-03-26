@@ -1,10 +1,8 @@
-# model.py
 import pandas as pd
+import os
 
-# Load the CSV
-DATA_FILE = "data/courses.csv"  # Ensure your CSV is saved here
+DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "courses.csv")
 data = pd.read_csv(DATA_FILE)
-
 # Normalize subjects to lowercase for comparison
 def normalize_subjects(subjects):
     return [s.lower().strip() for s in subjects]

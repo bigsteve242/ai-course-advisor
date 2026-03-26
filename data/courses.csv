@@ -1,0 +1,37 @@
+course,required_subjects
+Medicine,English, Mathematics, Biology, Chemistry
+Nursing,English, Mathematics, Biology, Chemistry
+Pharmacy,English, Mathematics, Biology, Chemistry
+Economics,English, Mathematics, Economics, Government
+Accounting,English, Mathematics, Economics
+Computer Science,English, Mathematics, Physics
+Software Engineering,English, Mathematics, Physics
+Information Technology,English, Mathematics, Physics
+Computer Engineering,English, Mathematics, Physics, Chemistry
+Mechanical Engineering,English, Mathematics, Physics
+Electrical Engineering,English, Mathematics, Physics
+Civil Engineering,English, Mathematics, Physics
+Architecture,English, Mathematics, Physics, Technical Drawing
+Law,English, Literature, Government
+Political Science,English, Government, Literature, Economics
+Business Administration,English, Mathematics, Economics
+Marketing,English, Mathematics, Economics
+Mass Communication,English, Literature, Government
+Sociology,English, Literature, Government
+Psychology,English, Literature, Biology
+Microbiology,English, Biology, Chemistry, Mathematics
+Biochemistry,English, Biology, Chemistry, Mathematics
+Physics,English, Mathematics, Physics
+Chemistry,English, Mathematics, Chemistry
+Mathematics,English, Mathematics
+Statistics,English, Mathematics
+Environmental Science,English, Biology, Chemistry, Geography
+Geography,English, Mathematics, Geography
+Fine Arts,English, Literature, Arts
+Performing Arts,English, Literature, Arts
+AI & Machine Learning,English, Mathematics, Physics, Computer Science
+Data Science,English, Mathematics, Computer Science, Statistics
+Cybersecurity,English, Mathematics, Computer Science, IT
+Robotics,English, Mathematics, Physics, Computer Science
+Econometrics,English, Mathematics, Economics, Statistics
+Urban Planning,English, Mathematics, Geography, Government
