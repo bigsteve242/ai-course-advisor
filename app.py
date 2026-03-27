@@ -1,61 +1,72 @@
-from flask import Flask, request, jsonify
 import os
-import openai
+from flask import Flask, request, jsonify
+from openai import OpenAI
 
 app = Flask(__name__)
 
-# Load OpenAI API key from environment variable
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+# Initialize OpenAI client using your environment variable
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# Example subjects database
-SUBJECTS_DB = {
-    "Mathematics": ["English", "Mathematics", "Economics", "Government"],
-    "Physics": ["English", "Mathematics", "Physics", "Chemistry"],
-    "Medicine": ["English", "Biology", "Chemistry", "Physics"],
+# Example course requirements
+COURSES = {
+    "medicine": ["english", "biology", "chemistry", "physics"],
+    "economics": ["english", "mathematics", "economics", "government"],
+    "physics": ["english", "mathematics", "physics", "chemistry"],
+    "computer science": ["english", "mathematics", "physics", "chemistry"],
+    # Add more courses here
 }
 
-# Detect subjects from user input
-def detect_subjects(text):
-    subjects = []
-    for subject in ["Mathematics", "Physics", "Chemistry", "Biology", "Economics", "English", "Government"]:
-        if subject.lower() in text.lower():
-            subjects.append(subject)
-    return subjects
-
+# Utility functions
 def normalize_subjects(subjects):
-    return list(set(subjects))  # remove duplicates
+    return [s.lower().strip() for s in subjects]
 
-def detect_course(text):
-    for course in SUBJECTS_DB.keys():
-        if course.lower() in text.lower():
+def detect_subjects(user_input):
+    words = user_input.lower().split()
+    # Filter words that match known subjects
+    known_subjects = ["english", "mathematics", "physics", "chemistry", "biology", "government", "economics"]
+    return [w for w in words if w in known_subjects]
+
+def detect_course(user_input):
+    for course in COURSES.keys():
+        if course in user_input.lower():
             return course
     return None
 
 def get_required_subjects(course):
-    return SUBJECTS_DB.get(course, [])
+    return COURSES.get(course, [])
 
-# API endpoint for chatbot
+# Root route
+@app.route("/")
+def index():
+    return "🟢 AI Chatbot is live! Use POST /chat to interact."
+
+# Chat route
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message", "").strip()
 
-    # Detect subjects + course
-    user_subjects = detect_subjects(user_input)
-    user_subjects = normalize_subjects(user_subjects)
+    # Detect subjects and requested course
+    user_subjects = normalize_subjects(detect_subjects(user_input))
     course_request = detect_course(user_input)
 
     system_info = ""
+    missing_subjects = []
 
     if course_request:
         required = get_required_subjects(course_request)
-        system_info += f"\nCourse: {course_request}\nRequired subjects: {', '.join(required)}\n"
+        missing_subjects = [s for s in required if s not in user_subjects]
+        system_info += f"\nCourse: {course_request.title()}\nRequired subjects: {', '.join(required)}\n"
+        if missing_subjects:
+            system_info += f"Missing subjects: {', '.join(missing_subjects)}\n"
+        else:
+            system_info += "✅ You have all required subjects!\n"
 
     if user_subjects:
         system_info += f"User subjects: {', '.join(user_subjects)}\n"
 
-    # AI Response using OpenAI
+    # AI Response using OpenAI GPT-4o-mini
     try:
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
@@ -71,13 +82,12 @@ def chat():
             ]
         )
         reply = response.choices[0].message.content
-
     except Exception as e:
-        print("OpenAI Error:", e)
+        print("OpenAI error:", e)
         reply = "⚠️ AI is temporarily unavailable. Please try again."
 
     return jsonify({"response": reply})
 
 # Run app
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(debug=True)
