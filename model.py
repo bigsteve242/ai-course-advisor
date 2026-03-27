@@ -1,30 +1,40 @@
-import pandas as pd
-import os
+import csv
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "courses.csv")
-data = pd.read_csv(DATA_FILE)
-# Normalize subjects to lowercase for comparison
+DATA_FILE = "data/courses.csv"
+
+data = []
+
+# Load CSV manually
+with open(DATA_FILE, newline='', encoding='utf-8') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        data.append(row)
+
+
 def normalize_subjects(subjects):
-    return [s.lower().strip() for s in subjects]
+    return [s.strip().lower() for s in subjects]
 
-# Get required subjects for a course
+
 def get_required_subjects(course_name):
-    row = data[data['course'].str.lower() == course_name.lower()]
-    if not row.empty:
-        return [sub.strip().lower() for sub in row['required_subjects'].iloc[0].split(',')]
+    for row in data:
+        if row["Course"].lower() == course_name.lower():
+            return [s.strip().lower() for s in row["RequiredSubjects"].split(",")]
     return []
 
-# Check if user can study the course
+
 def can_study(course_name, user_subjects):
     required = get_required_subjects(course_name)
-    return all(r in user_subjects for r in required)
+    return all(sub in user_subjects for sub in required)
 
-# Recommend courses based on user's subjects
+
 def recommend_courses(user_subjects):
-    user_subjects = normalize_subjects(user_subjects)
-    recommendations = []
-    for _, row in data.iterrows():
-        required = [s.strip().lower() for s in row['required_subjects'].split(',')]
+    user_subjects = [s.lower() for s in user_subjects]
+    courses = []
+
+    for row in data:
+        required = [s.strip().lower() for s in row["RequiredSubjects"].split(",")]
+
         if all(r in user_subjects for r in required):
-            recommendations.append(f"{row['course']} - {row['description']}")
-    return recommendations
+            courses.append(row["Course"])
+
+    return courses
