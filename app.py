@@ -1,107 +1,121 @@
-from flask import Flask, render_template, request, jsonify
-from difflib import get_close_matches
-from model import normalize_subjects, get_required_subjects, can_study, recommend_courses, data
+from flask import Flask, request, jsonify, render_template
+import os
+
+# OpenAI client
+from openai import OpenAI
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 app = Flask(__name__)
 
-# ------------------ Known subjects ------------------
-KNOWN_SUBJECTS = [
-    "mathematics", "math", "physics", "chemistry", "biology",
-    "economics", "literature", "government", "crs", "english"
-]
+# ----- Courses and required subjects -----
+COURSES = {
+    "medicine": ["english", "biology", "chemistry", "physics"],
+    "engineering": ["english", "mathematics", "physics", "chemistry"],
+    "economics": ["english", "mathematics", "economics", "government"],
+    "law": ["english", "government", "literature", "history"],
+    "computer science": ["english", "mathematics", "physics", "computer science"],
+    "accounting": ["english", "mathematics", "accounting", "economics"],
+    "biology": ["english", "biology", "chemistry"],
+    "chemistry": ["english", "chemistry", "biology"],
+    "physics": ["english", "physics", "mathematics"],
+}
 
-# ------------------ Detect subjects (SMART) ------------------
-def detect_subjects(user_input):
-    words = user_input.lower().split()
-    detected = []
+# ----- Helper functions -----
+def normalize_subjects(subjects):
+    return [s.lower().strip() for s in subjects]
 
-    for word in words:
-        if word in KNOWN_SUBJECTS:
-            detected.append(word)
-        else:
-            match = get_close_matches(word, KNOWN_SUBJECTS, n=1, cutoff=0.7)
-            if match:
-                detected.append(match[0])
-
+def detect_subjects(text):
+    """Detect subjects mentioned in user input"""
+    words = text.lower().split()
+    detected = [subj for subj in sum(COURSES.values(), []) if subj in words]
     return list(set(detected))
 
-
-# ------------------ Detect course (SMART) ------------------
-def detect_course(user_input):
-    courses = [row["Course"] for row in data]
-    matches = get_close_matches(user_input.lower(), [c.lower() for c in courses], n=1, cutoff=0.5)
-
-    if matches:
-        for c in courses:
-            if c.lower() == matches[0]:
-                return c
+def detect_course(text):
+    """Detect course mentioned in user input"""
+    for course in COURSES.keys():
+        if course in text.lower():
+            return course
     return None
 
+def recommend_courses(user_subjects):
+    """Return courses user can study based on subjects already had"""
+    possible = []
+    for course, required in COURSES.items():
+        match_count = sum(1 for subj in required if subj.lower() in user_subjects)
+        if match_count > 0:
+            missing = [subj for subj in required if subj.lower() not in user_subjects]
+            possible.append({
+                "course": course,
+                "matched": match_count,
+                "missing": missing
+            })
+    # Sort by most matches first
+    possible.sort(key=lambda x: x["matched"], reverse=True)
+    return possible
 
-# ------------------ Routes ------------------
+# ----- Routes -----
 @app.route("/")
 def home():
     return render_template("index.html")
-
 
 @app.route("/chat", methods=["POST"])
 def chat():
     user_input = request.json.get("message", "").strip()
 
-    # Detect subjects and course
+    # Detect subjects + course
     user_subjects = detect_subjects(user_input)
     user_subjects = normalize_subjects(user_subjects)
     course_request = detect_course(user_input)
 
-    # ------------------ Smart Response Logic ------------------
-    if course_request and user_subjects:
-        if can_study(course_request, user_subjects):
-            response = f"✅ Yes! You can study {course_request} with your subjects."
+    # AI prompt preparation
+    system_info = ""
+    if course_request:
+        required = COURSES.get(course_request, [])
+        system_info += f"\nCourse: {course_request.title()}\nRequired subjects: {', '.join(required)}\n"
+
+    if user_subjects:
+        system_info += f"User subjects: {', '.join(user_subjects)}\n"
+
+    # Add recommended courses
+    if user_subjects:
+        courses_suggested = recommend_courses(user_subjects)
+        if courses_suggested:
+            reply_lines = []
+            for c in courses_suggested[:5]:  # top 5 suggestions
+                if c["missing"]:
+                    reply_lines.append(
+                        f"📚 {c['course'].title()} - Missing: {', '.join(c['missing'])}"
+                    )
+                else:
+                    reply_lines.append(f"✅ You can study {c['course'].title()}")
+            system_info += "\n".join(reply_lines)
         else:
-            required = get_required_subjects(course_request)
-            missing = [sub for sub in required if sub not in user_subjects]
+            system_info += "❌ No matching courses found. Try adding more subjects."
 
-            response = (
-                f"❌ You cannot study {course_request}.\n"
-                f"Required subjects: {', '.join(required)}\n"
-                f"Missing subjects: {', '.join(missing)}"
-            )
-
-    elif course_request:
-        required = get_required_subjects(course_request)
-
-        if required:
-            response = (
-                f"📚 To study {course_request}, you need:\n"
-                f"{', '.join(required)}"
-            )
-        else:
-            response = f"🤔 I don't have data for {course_request} yet."
-
-    elif user_subjects:
-        courses = recommend_courses(user_subjects)
-
-        if courses:
-            response = (
-                "🎓 Based on your subjects, you can study:\n"
-                + ", ".join(courses[:10])
-            )
-        else:
-            response = "❌ No matching courses found. Try adding more subjects."
-
-    else:
-        response = (
-            "🤖 I didn’t understand.\n"
-            "👉 Try:\n"
-            "- 'I have maths, physics, chemistry'\n"
-            "- 'Can I study medicine with biology and chemistry?'"
+    # Call AI
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a friendly and knowledgeable academic advisor chatbot. "
+                        "Help students choose courses based on their subjects. "
+                        "Be clear and educational."
+                        + system_info
+                    )
+                },
+                {"role": "user", "content": user_input}
+            ]
         )
+        reply = response.choices[0].message.content
 
-    return jsonify({"response": response})
+    except Exception as e:
+        reply = "⚠️ AI is temporarily unavailable. Please try again."
 
+    return jsonify({"response": reply})
 
-# ------------------ Run App ------------------
+# ----- Run app -----
 if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
