@@ -4,23 +4,21 @@ from model import normalize_subjects, get_required_subjects, can_study, recommen
 
 app = Flask(__name__)
 
-# Known subjects
+# ------------------ Known subjects ------------------
 KNOWN_SUBJECTS = [
-    "mathematics", "physics", "chemistry", "biology",
+    "mathematics", "math", "physics", "chemistry", "biology",
     "economics", "literature", "government", "crs", "english"
 ]
 
-# -------- Smart subject detection --------
+# ------------------ Detect subjects (SMART) ------------------
 def detect_subjects(user_input):
     words = user_input.lower().split()
     detected = []
 
     for word in words:
-        # Exact match
         if word in KNOWN_SUBJECTS:
             detected.append(word)
         else:
-            # Fuzzy match (fix typos)
             match = get_close_matches(word, KNOWN_SUBJECTS, n=1, cutoff=0.7)
             if match:
                 detected.append(match[0])
@@ -28,7 +26,7 @@ def detect_subjects(user_input):
     return list(set(detected))
 
 
-# -------- Smart course detection --------
+# ------------------ Detect course (SMART) ------------------
 def detect_course(user_input):
     courses = [row["Course"] for row in data]
     matches = get_close_matches(user_input.lower(), [c.lower() for c in courses], n=1, cutoff=0.5)
@@ -40,6 +38,7 @@ def detect_course(user_input):
     return None
 
 
+# ------------------ Routes ------------------
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -49,12 +48,12 @@ def home():
 def chat():
     user_input = request.json.get("message", "").strip()
 
-    # Detect subjects + course
+    # Detect subjects and course
     user_subjects = detect_subjects(user_input)
     user_subjects = normalize_subjects(user_subjects)
     course_request = detect_course(user_input)
 
-    # -------- Smart responses --------
+    # ------------------ Smart Response Logic ------------------
     if course_request and user_subjects:
         if can_study(course_request, user_subjects):
             response = f"✅ Yes! You can study {course_request} with your subjects."
@@ -65,13 +64,19 @@ def chat():
             response = (
                 f"❌ You cannot study {course_request}.\n"
                 f"Required subjects: {', '.join(required)}\n"
-                f"Missing subjects: {', '.join(missing)}\n"
-                f"👉 Tip: Try adding these subjects."
+                f"Missing subjects: {', '.join(missing)}"
             )
 
     elif course_request:
         required = get_required_subjects(course_request)
-        response = f"📚 To study {course_request}, you need: {', '.join(required)}"
+
+        if required:
+            response = (
+                f"📚 To study {course_request}, you need:\n"
+                f"{', '.join(required)}"
+            )
+        else:
+            response = f"🤔 I don't have data for {course_request} yet."
 
     elif user_subjects:
         courses = recommend_courses(user_subjects)
@@ -79,7 +84,7 @@ def chat():
         if courses:
             response = (
                 "🎓 Based on your subjects, you can study:\n"
-                + ", ".join(courses[:10])  # limit results
+                + ", ".join(courses[:10])
             )
         else:
             response = "❌ No matching courses found. Try adding more subjects."
@@ -95,6 +100,7 @@ def chat():
     return jsonify({"response": response})
 
 
+# ------------------ Run App ------------------
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
