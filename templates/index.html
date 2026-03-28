@@ -2,30 +2,80 @@
 <html>
 <head>
     <title>AI Course Advisor</title>
-</head>
-<body>
-    <h2>🎓 Stephen's AI Course Advisor</h2>
-
-    <input type="text" id="message" placeholder="Type your message..." />
-    <button onclick="sendMessage()">Send</button>
-
-    <p id="response"></p>
-
-    <script>
-        async function sendMessage() {
-            let msg = document.getElementById("message").value;
-
-            let res = await fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: msg })
-            });
-
-            let data = await res.json();
-            document.getElementById("response").innerText = data.response;
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
         }
-    </script>
+
+        #chat {
+            width: 60%;
+            margin: auto;
+            margin-top: 40px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .msg {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .user {
+            color: #38bdf8;
+        }
+
+        .bot {
+            color: #22c55e;
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background: #22c55e;
+            border: none;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🎓 Stephen's AI Course Advisor</h2>
+
+<div id="chat"></div>
+
+<input type="text" id="message" placeholder="How can I help you today?" />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+async function sendMessage() {
+    let msg = document.getElementById("message").value;
+
+    document.getElementById("chat").innerHTML += 
+        `<div class="msg user">👤 ${msg}</div>`;
+
+    let res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    });
+
+    let data = await res.json();
+
+    document.getElementById("chat").innerHTML += 
+        `<div class="msg bot">🤖 ${data.response}</div>`;
+
+    document.getElementById("message").value = "";
+}
+</script>
+
 </body>
 </html>
