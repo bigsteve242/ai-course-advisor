@@ -109,7 +109,8 @@ def chat():
         reply = response.choices[0].message.content
 
     except Exception as e:
-        reply = "⚠️ AI error. Try again."
+    print("🔥 ERROR:", str(e))
+    reply = f"⚠️ Error: {str(e)}"
 
     return jsonify({"response": reply})
 
